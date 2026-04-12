@@ -35,3 +35,12 @@ The app ships with `NEXT_PUBLIC_DEMO=true` so every flow works immediately with 
 | POST | `/webhook/mock-interview` | Chat turn |
 | POST | `/webhook/generate-feedback` | Feedback report |
 # ai-resume
+
+## Google Form & Sheet Integration
+
+- Implemented a Google Form for collecting user input  
+- Connected responses to Google Sheets for data storage  
+- Automated processing using Google Apps Script  
+ 
+Google Form Link: (https://forms.gle/YpQw6ufxWp6g7KDH8)  
+Google Sheet Link: (https://docs.google.com/spreadsheets/d/1xuo5OP1ieSX8pwMp094dbJp6zyOLqGErDyAsgSk0Uq8/edit?usp=sharing)
