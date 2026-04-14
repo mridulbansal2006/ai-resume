@@ -24,66 +24,82 @@ export default function Sidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-[260px] bg-[#0a0e17] border-r border-border flex-col z-40">
-        <div className="p-6 border-b border-border">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-accent to-orange-600 flex items-center justify-center font-bold text-white text-lg">
+      {/* Desktop sidebar */}
+      <aside className="hidden md:flex fixed left-0 top-0 bottom-0 w-[280px] bg-[#030406]/80 backdrop-blur-2xl border-r border-white/5 flex-col z-40">
+        <div className="p-8">
+          <Link href="/" className="flex items-center gap-4 group">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-accent to-accent-hover flex items-center justify-center font-black text-white text-2xl shadow-glow transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3">
               R
             </div>
             <div>
-              <div className="font-bold text-white text-lg tracking-tight">
-                Recruit<span className="text-accent">AI</span>
+              <div className="font-black text-white text-xl tracking-tighter transition-colors group-hover:text-accent">
+                Recruit<span className="text-gray-500 group-hover:text-white transition-colors duration-500">AI</span>
               </div>
-              <div className="text-[10px] text-gray-500 uppercase tracking-wider">
-                AI-assisted hiring
+              <div className="text-[10px] text-gray-600 font-black uppercase tracking-[0.2em] mt-0.5">
+                 Intelligence
               </div>
             </div>
           </Link>
         </div>
 
-        <nav className="flex-1 px-3 py-4 space-y-1">
+        <nav className="flex-1 px-4 py-8 space-y-2">
           {navItems.map((item) => {
             const active = isActive(item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                className={`flex items-center gap-4 px-4 py-3.5 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all duration-500 group relative ${
                   active
-                    ? "bg-accent/10 text-accent border border-accent/30"
-                    : "text-gray-400 hover:text-white hover:bg-surface-2 border border-transparent"
+                    ? "bg-white/[0.03] text-white border border-white/5 shadow-glow"
+                    : "text-gray-500 hover:text-gray-200 hover:bg-white/[0.02] border border-transparent"
                 }`}
               >
-                <span className="text-base">{item.icon}</span>
+                <span className={`text-xl transition-transform duration-500 group-hover:scale-125 ${active ? "opacity-100" : "opacity-50"}`}>{item.icon}</span>
                 <span>{item.label}</span>
-                {active && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-accent" />}
+                {active && (
+                  <>
+                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-accent shadow-glow" />
+                    <div className="absolute inset-0 rounded-2xl bg-accent opacity-[0.03] animate-pulse-slow" />
+                  </>
+                )}
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-4 border-t border-border space-y-2">
-          {demoMode && (
-            <div className="flex items-center gap-2 px-2 py-1.5 rounded-md bg-ai/10 border border-ai/30">
-              <span className="w-1.5 h-1.5 rounded-full bg-ai animate-pulse" />
-              <span className="text-[11px] font-semibold text-ai uppercase tracking-wider">
-                Demo Mode
-              </span>
+        <div className="p-6 border-t border-white/5 bg-black/20">
+          <div className="glass-panel p-4 space-y-4">
+            {demoMode && (
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <span className="flex w-2.5 h-2.5 rounded-full bg-accent animate-pulse" />
+                  <span className="absolute inset-0 w-2.5 h-2.5 rounded-full bg-accent animate-ping opacity-40" />
+                </div>
+                <span className="text-[10px] font-black text-accent uppercase tracking-widest">
+                  Live System
+                </span>
+              </div>
+            )}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    n8nConnected === null
+                      ? "bg-gray-500"
+                      : n8nConnected
+                      ? "bg-success"
+                      : "bg-danger"
+                  } shadow-sm`}
+                />
+                <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">
+                  Engine: {n8nConnected === null ? "..." : n8nConnected ? "online" : "error"}
+                </span>
+              </div>
+              <div className="w-8 h-8 rounded-full bg-white/[0.05] border border-white/5 flex items-center justify-center text-xs">
+                👤
+              </div>
             </div>
-          )}
-          <div className="flex items-center gap-2 text-[11px]">
-            <span
-              className={`w-1.5 h-1.5 rounded-full ${
-                n8nConnected === null
-                  ? "bg-gray-500"
-                  : n8nConnected
-                  ? "bg-success"
-                  : "bg-danger"
-              }`}
-            />
-            <span className="text-gray-500">
-              n8n: {n8nConnected === null ? "checking" : n8nConnected ? "connected" : "offline"}
-            </span>
           </div>
         </div>
       </aside>

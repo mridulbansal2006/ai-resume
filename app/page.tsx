@@ -49,52 +49,61 @@ export default function DashboardPage() {
         </div>
       )}
 
-      <header className="flex items-end justify-between gap-6 flex-wrap animate-in [animation-delay:100ms]">
-        <div className="space-y-1">
-          <h1 className="text-4xl font-black text-white tracking-tighter bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent">
+      <header className="flex items-end justify-between gap-6 flex-wrap animate-in">
+        <div className="space-y-2">
+          <h1 className="text-5xl md:text-6xl font-black tracking-tighter text-shimmer">
             Talent Pipeline
           </h1>
-          <p className="text-gray-500 text-sm font-medium tracking-tight">
-            Managing <span className="text-gray-300 font-bold">{candidates.length}</span> active candidate profiles
+          <p className="text-gray-500 text-sm font-bold uppercase tracking-[0.2em]">
+            Managing <span className="text-white">{candidates.length}</span> active candidate profiles
           </p>
         </div>
-        <div className="flex items-center gap-8 bg-white/[0.02] border border-white/[0.05] p-2 rounded-2xl backdrop-blur-md">
-          <Switch checked={compact} onChange={setCompact} label="Compact View" />
-          <div className="w-px h-8 bg-white/10" />
+        <div className="flex items-center gap-6 bg-white/[0.02] border border-white/[0.05] p-2 rounded-2xl backdrop-blur-2xl shadow-glow">
+          <div className="px-4">
+            <Switch checked={compact} onChange={setCompact} label="Compact" />
+          </div>
+          <div className="w-px h-10 bg-white/10" />
           <button
             onClick={refreshCandidates}
             disabled={loadingCandidates}
-            className="btn-secondary !rounded-xl !py-2 h-10"
+            className="btn-primary !py-2 !px-6 h-11"
           >
-            {loadingCandidates ? "Syncing..." : "Sync Pipeline"}
+            {loadingCandidates ? (
+              <span className="flex items-center gap-2">
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Syncing...
+              </span>
+            ) : (
+              "Sync Pipeline"
+            )}
           </button>
         </div>
       </header>
 
-      <div className="animate-in [animation-delay:200ms]">
+      <div className="animate-in [animation-delay:100ms]">
         <StatsCards candidates={candidates} />
       </div>
 
-      <div className="card p-5 flex items-center gap-6 flex-wrap animate-in [animation-delay:300ms]">
-        <div className="flex-1 min-w-[300px] relative group">
-          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-gray-500 group-focus-within:text-accent transition-colors">
+      <div className="card-premium p-6 flex items-center gap-8 flex-wrap animate-in [animation-delay:200ms]">
+        <div className="flex-1 min-w-[320px] relative group">
+          <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none text-gray-500 group-focus-within:text-accent transition-colors duration-300 text-lg">
             🔍
           </div>
           <input
-            className="input !pl-12 !bg-white/[0.01] !border-white/[0.05] focus:!border-accent/30"
-            placeholder="Search by name or keyword..."
+            className="input !pl-14 !bg-white/[0.01] !border-white/[0.05] focus:!border-accent/30 text-base"
+            placeholder="Search by name, role or keyword..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
         </div>
-        <div className="flex items-center gap-2 p-1.5 bg-black/20 rounded-xl border border-white/[0.05]">
+        <div className="flex items-center gap-2.5 p-1.5 bg-black/40 rounded-2xl border border-white/[0.05] backdrop-blur-xl">
           {chips.map((c) => (
             <button
               key={c.key}
               onClick={() => setFilter(c.key)}
-              className={`px-4 py-2 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-all duration-300 ${
+              className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-500 ${
                 filter === c.key
-                  ? "bg-accent text-white shadow-xl shadow-accent/20"
+                  ? "bg-accent text-white shadow-glow-lg scale-[1.05]"
                   : `hover:bg-white/[0.05] ${c.color || "text-gray-500 hover:text-gray-300"}`
               }`}
             >
@@ -104,7 +113,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="animate-in [animation-delay:400ms]">
+      <div className="animate-in [animation-delay:300ms] overflow-hidden rounded-3xl border border-white/[0.05] shadow-glow">
         <CandidateTable candidates={filtered} compact={compact} />
       </div>
     </div>

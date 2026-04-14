@@ -9,41 +9,45 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#08090d",
-        surface: "#0f1118",
+        bg: "#030406",
+        surface: "#0d0f14",
         "surface-2": "#161922",
         border: "#1e2230",
-        accent: "#f97316",
+        accent: {
+          DEFAULT: "#7c3aed",
+          hover: "#6d28d9",
+          glow: "rgba(124, 58, 237, 0.3)",
+        },
         info: "#06b6d4",
-        success: "#22c55e",
+        success: "#10b981",
         ai: "#a78bfa",
-        danger: "#ef4444",
-        warn: "#eab308",
+        danger: "#f43f5e",
+        warn: "#f59e0b",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "Inter", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "JetBrains Mono", "ui-monospace", "monospace"],
       },
       boxShadow: {
-        glow: "0 0 0 1px rgba(249, 115, 22, 0.3), 0 0 24px rgba(249,115,22,0.08)",
+        glow: "0 0 20px rgba(124, 58, 237, 0.15)",
+        "glow-lg": "0 0 30px rgba(124, 58, 237, 0.25)",
+      },
+      backgroundImage: {
+        "mesh-gradient": "radial-gradient(at 0% 0%, rgba(124, 58, 237, 0.05) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(244, 63, 94, 0.05) 0px, transparent 50%)",
       },
       animation: {
-        "fade-in": "fadeIn 0.25s ease-out",
-        "slide-in": "slideIn 0.3s ease-out",
-        "pulse-dot": "pulseDot 1.4s ease-in-out infinite",
+        "fade-in": "fadeIn 0.5s ease-out forwards",
+        "slide-up": "slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
       keyframes: {
         fadeIn: {
-          "0%": { opacity: "0", transform: "translateY(4px)" },
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        slideUp: {
+          "0%": { opacity: "0", transform: "translateY(20px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        slideIn: {
-          "0%": { transform: "translateX(100%)" },
-          "100%": { transform: "translateX(0)" },
-        },
-        pulseDot: {
-          "0%, 80%, 100%": { opacity: "0.3" },
-          "40%": { opacity: "1" },
         },
       },
     },
