@@ -7,7 +7,13 @@ import DetailPanel from "./DetailPanel";
 import { useApp } from "@/lib/context";
 import { updateDecision, generateInterview } from "@/lib/api";
 
-export default function CandidateTable({ candidates }: { candidates: Candidate[] }) {
+export default function CandidateTable({ 
+  candidates, 
+  compact = false 
+}: { 
+  candidates: Candidate[]; 
+  compact?: boolean; 
+}) {
   const { refreshCandidates, notify } = useApp();
   const [selected, setSelected] = useState<Candidate | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -61,8 +67,7 @@ export default function CandidateTable({ candidates }: { candidates: Candidate[]
             <tr className="text-left border-b border-border">
               <th className="py-3 px-3 text-[10px] uppercase tracking-wider text-gray-500 font-semibold">#</th>
               <th className="py-3 px-3 text-[10px] uppercase tracking-wider text-gray-500 font-semibold">Candidate</th>
-              <th className="py-3 px-3 text-[10px] uppercase tracking-wider text-gray-500 font-semibold">Role</th>
-              <th className="py-3 px-3 text-[10px] uppercase tracking-wider text-gray-500 font-semibold">Level</th>
+              <th className="py-3 px-3 text-[10px] uppercase tracking-wider text-gray-500 font-semibold text-center">Role/Lv</th>
               <th className="py-3 px-3 text-[10px] uppercase tracking-wider text-gray-500 font-semibold">Score</th>
               <th className="py-3 px-3 text-[10px] uppercase tracking-wider text-gray-500 font-semibold">Rec</th>
               <th className="py-3 px-3 text-[10px] uppercase tracking-wider text-gray-500 font-semibold">Breakdown</th>
@@ -77,6 +82,7 @@ export default function CandidateTable({ candidates }: { candidates: Candidate[]
                 key={c.id}
                 candidate={c}
                 rank={i + 1}
+                compact={compact}
                 onView={() => setSelected(c)}
                 onGenerateInterview={() => handleGenerateInterview(c)}
                 onUpdateDecision={(d) => handleDecision(c, d)}

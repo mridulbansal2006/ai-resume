@@ -12,6 +12,7 @@ interface Props {
   onGenerateInterview: () => void;
   onUpdateDecision: (d: RecruiterDecision) => void;
   busy?: boolean;
+  compact?: boolean;
 }
 
 export default function CandidateRow({
@@ -21,6 +22,7 @@ export default function CandidateRow({
   onGenerateInterview,
   onUpdateDecision,
   busy,
+  compact = false,
 }: Props) {
   const c = candidate;
   const hasInterviewKit = c.stage === "interview_generated" || c.stage === "interview_done" || c.stage === "feedback_ready";
@@ -28,41 +30,43 @@ export default function CandidateRow({
   const canViewFeedback = c.stage === "feedback_ready" || c.stage === "interview_done";
 
   return (
-    <tr className="border-b border-border hover:bg-surface-2/40 transition group">
-      <td className="py-3 px-3 text-xs font-mono text-gray-500 w-12">#{rank}</td>
-      <td className="py-3 px-3 min-w-[180px]">
-        <button onClick={onView} className="text-left group-hover:text-accent transition">
-          <div className="font-semibold text-white">{c.candidate_name}</div>
-          <div className="text-[11px] text-gray-500 font-mono">{c.id}</div>
+    <tr className={`border-b border-border/50 hover:bg-white/[0.02] transition-colors group relative ${compact ? 'py-1' : 'py-4'}`}>
+      <td className={`${compact ? 'py-2' : 'py-4'} px-3 text-xs font-mono text-gray-500 w-12 opacity-50 group-hover:opacity-100 transition-opacity`}>#{rank}</td>
+      <td className={`${compact ? 'py-2' : 'py-4'} px-3 min-w-[200px]`}>
+        <button onClick={onView} className="text-left group transition-all">
+          <div className={`${compact ? 'text-xs' : 'text-sm'} font-bold text-gray-100 group-hover:text-accent group-hover:translate-x-1 transition-all flex items-center gap-2`}>
+            {c.candidate_name}
+          </div>
+          {!compact && <div className="text-[10px] text-gray-600 font-mono mt-0.5 uppercase tracking-tighter">{c.id}</div>}
         </button>
       </td>
-      <td className="py-3 px-3 text-sm text-gray-300 min-w-[160px]">{c.role_applied}</td>
-      <td className="py-3 px-3">
-        <span className="badge border border-border bg-surface-2 text-gray-300 font-mono">
-          {c.experience_level}
-        </span>
-      </td>
-      <td className="py-3 px-3">
-        <ScoreBadge score={c.ai_score} />
-      </td>
-      <td className="py-3 px-3">
-        <RecommendationBadge recommendation={c.recommendation} />
-      </td>
-      <td className="py-3 px-3">
-        <div className="flex gap-2">
-          <MiniBar label="Skill" value={c.skill_match} color="bg-info" />
-          <MiniBar label="KW" value={c.keyword_match} color="bg-ai" />
-          <MiniBar label="Exp" value={c.experience_match} color="bg-accent" />
+      <td className={`${compact ? 'py-2' : 'py-4'} px-3 min-w-[160px]`}>
+        <div className="flex flex-col">
+          <span className={`${compact ? 'text-xs' : 'text-sm'} text-gray-400 font-medium`}>{c.role_applied}</span>
+          <span className="text-[9px] uppercase tracking-wider text-gray-600 font-bold mt-0.5">{c.experience_level}</span>
         </div>
       </td>
-      <td className="py-3 px-3">
+      <td className={`${compact ? 'py-2' : 'py-4'} px-3`}>
+        <ScoreBadge score={c.ai_score} size={compact ? "sm" : "md"} />
+      </td>
+      <td className={`${compact ? 'py-2' : 'py-4'} px-3`}>
+        <RecommendationBadge recommendation={c.recommendation} />
+      </td>
+      <td className={`${compact ? 'py-2' : 'py-4'} px-3`}>
+        <div className={`flex ${compact ? 'gap-1' : 'gap-3'}`}>
+          <MiniBar label="Skill" value={c.skill_match} color="bg-info" />
+          <MiniBar label="Match" value={c.keyword_match} color="bg-ai" />
+          {!compact && <MiniBar label="Exp" value={c.experience_match} color="bg-accent" />}
+        </div>
+      </td>
+      <td className={`${compact ? 'py-2' : 'py-4'} px-3`}>
         <PipelineStage stage={c.stage} />
       </td>
-      <td className="py-3 px-3">
+      <td className={`${compact ? 'py-1' : 'py-4'} px-3`}>
         <select
           value={c.recruiter_decision}
           onChange={(e) => onUpdateDecision(e.target.value as RecruiterDecision)}
-          className="input text-xs py-1 min-w-[110px]"
+          className={`bg-surface-2 border border-border rounded-lg text-[10px] ${compact ? 'py-1 px-1 min-w-[100px]' : 'py-1.5 px-2 min-w-[120px]'} focus:outline-none focus:ring-1 focus:ring-accent/40`}
           disabled={busy}
         >
           <option value="PENDING">Pending</option>
@@ -71,38 +75,43 @@ export default function CandidateRow({
           <option value="HOLD">Hold</option>
         </select>
       </td>
-      <td className="py-3 px-3">
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <button onClick={onView} className="btn-ghost text-xs px-2 py-1" title="View details">
-            👁 View
-          </button>
+      <td className={`${compact ? 'py-2' : 'py-4'} px-3`}>
+        <div className={`flex items-center ${compact ? 'gap-1' : 'gap-2'} flex-wrap`}>
+          {!compact && (
+            <button onClick={onView} className="p-1.5 rounded-lg bg-surface-2 border border-border text-gray-400 hover:text-white hover:border-accent/40 transition-all hover:scale-105 active:scale-95" title="View details">
+               👀
+            </button>
+          )}
           <button
             onClick={onGenerateInterview}
             disabled={busy || hasInterviewKit}
-            className="btn-secondary text-xs px-2 py-1"
-            title="Generate interview kit"
+            className={`${compact ? 'px-2 py-1' : 'px-3 py-1.5'} rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all hover:scale-105 active:scale-95 ${
+              hasInterviewKit 
+                ? "bg-success/10 text-success border border-success/30" 
+                : "bg-surface-2 border border-border text-gray-300 hover:border-accent/40"
+            }`}
           >
-            {hasInterviewKit ? "✓ Kit" : "Gen Interview"}
+            {hasInterviewKit ? (compact ? "Kit" : "Kit Ready") : (compact ? "Gen" : "Gen Kit")}
           </button>
           <Link
             href={`/interview/${c.id}`}
-            className={`btn text-xs px-2 py-1 ${
+            className={`${compact ? 'px-2 py-1' : 'px-3 py-1.5'} rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all hover:scale-105 active:scale-95 ${
               canStartInterview
-                ? "bg-ai/15 text-ai border border-ai/30 hover:bg-ai/25"
-                : "opacity-40 pointer-events-none bg-surface-2 text-gray-500 border border-border"
+                ? "bg-ai/10 text-ai border border-ai/30 hover:bg-ai/20"
+                : "opacity-20 pointer-events-none bg-surface-2 text-gray-500 border border-border"
             }`}
           >
-            Start
+            {compact ? "Int" : "Interview"}
           </Link>
           <Link
             href={`/feedback/${c.id}`}
-            className={`btn text-xs px-2 py-1 ${
+            className={`${compact ? 'px-2 py-1' : 'px-3 py-1.5'} rounded-lg text-[9px] font-bold uppercase tracking-wider transition-all hover:scale-105 active:scale-95 ${
               canViewFeedback
-                ? "bg-success/15 text-success border border-success/30 hover:bg-success/25"
-                : "opacity-40 pointer-events-none bg-surface-2 text-gray-500 border border-border"
+                ? "bg-success/10 text-success border border-success/30 hover:bg-success/20"
+                : "opacity-20 pointer-events-none bg-surface-2 text-gray-500 border border-border"
             }`}
           >
-            Feedback
+            {compact ? "Feed" : "Feedback"}
           </Link>
         </div>
       </td>
